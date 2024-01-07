@@ -103,7 +103,7 @@ export default (_window) => {
         if (fs.existsSync(folder)) fs.rmSync(folder, { recursive: true, force: true });
         fs.mkdirSync(folder, { recursive: true });
         copyFile(fontPath, folder).then(() => {
-            writeHtmlFile(id, name);
+            // writeHtmlFile(id, name);
             var copyUrl = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString(), "font", path.basename(fontPath));
             Query('update "project" set fontfamily=?,fontfile=? where id=?;', [name, copyUrl, id])
                 .then((rows) => {
@@ -154,7 +154,7 @@ export default (_window) => {
             encoding: "utf8",
         });
         Query('select fontfamily from "project" where id=?;', [id]).then((rows) => {
-            writeHtmlFile(id, rows[0].font);
+            // writeHtmlFile(id, rows[0].font);
         });
     });
     ipcMain.on(ipc.ChooseFolder, () => {
@@ -169,46 +169,46 @@ export default (_window) => {
     });
 };
 
-function writeHtmlFile(project, outputName) {
-    var chars = "";
-    var contentFile = path.join(path.dirname(app.getAppPath("exe")), "data", project.toString(), "content.txt");
-    if (fs.existsSync(contentFile)) {
-        chars = fs.readFileSync(contentFile, "utf-8");
-    }
-    const data = `<!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Fontmin</title>
-                        <style>
-                        @font-face {
-                            font-family: "${outputName}";
-                            src: url('./fonts/${outputName}.ttf');
-                            font-weight: normal;
-                            font-style: normal;
-                        }
+// function writeHtmlFile(project, outputName) {
+//     var chars = "";
+//     var contentFile = path.join(path.dirname(app.getAppPath("exe")), "data", project.toString(), "content.txt");
+//     if (fs.existsSync(contentFile)) {
+//         chars = fs.readFileSync(contentFile, "utf-8");
+//     }
+//     const data = `<!DOCTYPE html>
+//                     <html lang="en">
+//                     <head>
+//                         <meta charset="UTF-8">
+//                         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+//                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//                         <title>Fontmin</title>
+//                         <style>
+//                         @font-face {
+//                             font-family: "${outputName}";
+//                             src: url('./fonts/${outputName}.ttf');
+//                             font-weight: normal;
+//                             font-style: normal;
+//                         }
 
-                        /*使用指定字体*/
-                        body {
-                            font-family: '${outputName}';
-                        }
-                        </style>
-                    </head>
-                    <body>
-                    ${chars}
-                    </body>
-                    </html>`;
-    fs.writeFileSync(path.join(path.dirname(app.getAppPath("exe")), "data", project.toString(), "index.html"), data, {
-        encoding: "utf8",
-    });
-}
+//                         /*使用指定字体*/
+//                         body {
+//                             font-family: '${outputName}';
+//                         }
+//                         </style>
+//                     </head>
+//                     <body>
+//                     ${chars}
+//                     </body>
+//                     </html>`;
+//     fs.writeFileSync(path.join(path.dirname(app.getAppPath("exe")), "data", project.toString(), "index.html"), data, {
+//         encoding: "utf8",
+//     });
+// }
 function copyFile(sourceFile, targetFolder) {
     return new Promise((resolve, reject) => {
         const extName = path.extname(sourceFile);
         const fileName = path.basename(sourceFile);
-        console.log(extName, fileName, targetFolder);
+        // console.log(extName, fileName, targetFolder);
         fs.readFile(sourceFile, (err, data) => {
             fs.writeFile(path.join(targetFolder, fileName), data, (err) => {
                 if (err) {

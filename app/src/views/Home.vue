@@ -2,7 +2,11 @@
     <div class="main" @drop.prevent v-loading="loading" element-loading-text="正在输出...">
         <div class="header">
             <b> <img src="@/assets/logo.png" style="width: 20px" />字体压缩</b>
-            <div></div>
+            <div style="margin-right: 10px">
+                <el-button icon="SemiSelect" size="small" style="width: 20px; -webkit-app-region: no-drag" type="primary" plain @click="$ipc.send('MinWindow')"></el-button>
+                <el-button icon="FullScreen" size="small" style="width: 20px; -webkit-app-region: no-drag" type="primary" plain @click="$ipc.send('MaxWindow')"></el-button>
+                <el-button icon="CloseBold" size="small" style="width: 20px; -webkit-app-region: no-drag" type="primary" plain @click="$ipc.send('Exit')"></el-button>
+            </div>
         </div>
         <div class="body">
             <div class="project">
