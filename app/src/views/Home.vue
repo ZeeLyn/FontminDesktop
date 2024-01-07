@@ -73,7 +73,6 @@ export default {
             this.$ipc.send(ipc.EditTypes, this.project.id, JSON.stringify(this.types));
         },
         EditTypes(e, res) {
-            console.log(res);
             this.project.types = res.EditTypes;
         },
         SetFont(e, data) {
