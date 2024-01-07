@@ -1,8 +1,0 @@
-version: 0.2.1
-files:
-    - url: Translate-Desktop-Setup-0.2.0.exe
-      sha512: ZiJ9rywqaW2aNMticYy1hZmrQ2mBbblmOjLmq2NKfeKCA52K17Eyf9MGPKP0kHWkZc3kpUmcAHrXak8nWcZLpQ==
-      size: 63361798
-path: Translate-Desktop-Setup-0.2.0.exe
-sha512: ZiJ9rywqaW2aNMticYy1hZmrQ2mBbblmOjLmq2NKfeKCA52K17Eyf9MGPKP0kHWkZc3kpUmcAHrXak8nWcZLpQ==
-releaseDate: "2022-04-22T10:36:39.085Z"

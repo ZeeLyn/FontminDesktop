@@ -11,11 +11,6 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 
 app.setAppUserModelId("Fontmin Desktop");
 
-// console.log(app.getPath("userData"), app.getAppPath());
-
-// convertFont(`D://SourceHanSerifCN-Light-5.otf`, `D://test.ttf`);
-
-// Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: true, standard: true } }]);
 var mainWindow = null;
 async function createWindow() {
@@ -24,9 +19,9 @@ async function createWindow() {
 
     const cwd = isDevelopment ? null : path.join(__dirname, "..");
     const win = (mainWindow = new BrowserWindow({
-        width: 1000,
+        width: 1200,
         height: 750,
-        minWidth: 1000,
+        minWidth: 1200,
         minHeight: 750,
         show: true,
         skipTaskbar: false,
@@ -34,7 +29,7 @@ async function createWindow() {
         webPreferences: {
             // Use pluginOptions.nodeIntegration, leave this alone
             // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-            devTools: true,
+            devTools: isDevelopment,
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: false,
@@ -46,7 +41,7 @@ async function createWindow() {
         fullscreenable: false,
 
         alwaysOnTop: false,
-        frame: true,
+        frame: isDevelopment,
     }));
 
     win.webContents.setZoomFactor(1.0);
@@ -74,7 +69,7 @@ async function createWindow() {
 if (!isDevelopment) {
     app.setLoginItemSettings({
         //设置开机启动
-        openAtLogin: true,
+        openAtLogin: false,
     });
 }
 
