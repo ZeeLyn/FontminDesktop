@@ -7,6 +7,9 @@
                         <p>字体名字：{{ !item.fontfamily ? "未设置字体" : item.fontfamily }} <el-button :is="item.fontfamily" type="primary" icon="Edit" text size="small" style="margin-left: 15px" @click="EditFontFamilyHandler(item)">编辑</el-button></p>
                         <p>字体文件：{{ getFileName(item.fontfile) }}</p>
                         <p>输出目录：{{ item.output }}<el-button :is="item.fontfamily" type="primary" icon="Folder" text size="small" style="margin-left: 15px" @click="OpenPathHandler(item)">打开</el-button></p>
+                        <p>
+                            输出格式：<el-tag v-for="item in JSON.parse(item.types)" :key="item" size="small" type="success">{{ item }}</el-tag>
+                        </p>
                     </div>
                     <template #header>
                         <div class="card-header">
