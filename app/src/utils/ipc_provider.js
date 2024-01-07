@@ -1,27 +1,24 @@
 /*eslint-disable */
 import ipc from "./ipc";
-import { ipcMain, dialog } from "electron";
+import { ipcMain, dialog, app } from "electron";
 import { Execute, Query } from "./database";
 import fs from "fs";
 import path from "path";
-import fontCarrier from "font-carrier";
-// var Fontmin = require("fontmin");
-// import Fontmin from "fontmin";
-// const isDevelopment = process.env.NODE_ENV !== "production";
-// const cwd = isDevelopment ? null : path.join(__dirname, "..");
-// const icon = isDevelopment ? path.join("./public", "logo.ico") : path.join(cwd, "app.asar/logo.ico");
-export default (window) => {
+import fontCarrier from "../font-carrier/index.js";
+export default (_window) => {
+    var window = _window;
+    ipcMain.on(ipc.GetBaseDir, (evt) => {
+        window.webContents.send(ipc.GetBaseDir, path.dirname(app.getAppPath("exe")));
+    });
     ipcMain.on(ipc.GenerateFont, (evt, id) => {
-        var contentFile = path.join(__dirname, "data", id.toString(), "content.txt");
+        var contentFile = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString(), "content.txt");
         Query('select fontfamily,fontfile,output,types from "project" where id=?;', [id]).then((rows) => {
             fs.readFile(contentFile, { encoding: "utf-8" }, (err, data) => {
                 if (err) {
                     console(err);
                     return;
                 }
-
                 var types = JSON.parse(rows[0].types);
-
                 var transFont = fontCarrier.transfer(rows[0].fontfile);
                 // 会自动根据当前的输入的文字过滤精简字体
                 transFont.min(data.toString());
@@ -37,7 +34,7 @@ export default (window) => {
         Execute('insert into "project"(title,output,types) values(?,?,?);', [title, output, '["eot","svg","ttf","woff","woff2"]'])
             .then((id) => {
                 try {
-                    var folder = path.join(__dirname, "data", id.toString());
+                    var folder = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString());
                     if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
                 } catch (err) {
                     console.error(err);
@@ -78,7 +75,7 @@ export default (window) => {
     ipcMain.on(ipc.DeleteProject, (evt, id) => {
         Execute('delete from "project" where id=?;', [id])
             .then(() => {
-                var folder = path.join(__dirname, "data", id.toString());
+                var folder = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString());
                 if (fs.existsSync(folder)) fs.rmdirSync(folder, { recursive: true, force: true });
                 window.webContents.send(ipc.DeleteProject, { success: true });
             })
@@ -102,12 +99,12 @@ export default (window) => {
             });
     });
     ipcMain.on(ipc.SetFont, (evt, id, fontPath, name) => {
-        var folder = path.join(__dirname, "data", id.toString(), "font");
+        var folder = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString(), "font");
         if (fs.existsSync(folder)) fs.rmSync(folder, { recursive: true, force: true });
         fs.mkdirSync(folder, { recursive: true });
         copyFile(fontPath, folder).then(() => {
             writeHtmlFile(id, name);
-            var copyUrl = path.join(__dirname, "data", id.toString(), "font", path.basename(fontPath));
+            var copyUrl = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString(), "font", path.basename(fontPath));
             Query('update "project" set fontfamily=?,fontfile=? where id=?;', [name, copyUrl, id])
                 .then((rows) => {
                     window.webContents.send(ipc.SetFont, {
@@ -128,7 +125,7 @@ export default (window) => {
         });
     });
     ipcMain.on(ipc.GetContent, (evt, id) => {
-        var contentFile = path.join(__dirname, "data", id.toString(), "content.txt");
+        var contentFile = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString(), "content.txt");
         Query('select fontfamily,fontfile from "project" where id=?;', [id]).then((rows) => {
             if (!fs.existsSync(contentFile)) {
                 window.webContents.send(ipc.GetContent, {
@@ -152,7 +149,7 @@ export default (window) => {
         });
     });
     ipcMain.on(ipc.SetContent, (evt, id, content) => {
-        var contentFile = path.join(__dirname, "data", id.toString(), "content.txt");
+        var contentFile = path.join(path.dirname(app.getAppPath("exe")), "data", id.toString(), "content.txt");
         fs.writeFileSync(contentFile, content, {
             encoding: "utf8",
         });
@@ -174,7 +171,7 @@ export default (window) => {
 
 function writeHtmlFile(project, outputName) {
     var chars = "";
-    var contentFile = path.join(__dirname, "data", project.toString(), "content.txt");
+    var contentFile = path.join(path.dirname(app.getAppPath("exe")), "data", project.toString(), "content.txt");
     if (fs.existsSync(contentFile)) {
         chars = fs.readFileSync(contentFile, "utf-8");
     }
@@ -203,7 +200,7 @@ function writeHtmlFile(project, outputName) {
                     ${chars}
                     </body>
                     </html>`;
-    fs.writeFileSync(path.join(__dirname, "data", project.toString(), "index.html"), data, {
+    fs.writeFileSync(path.join(path.dirname(app.getAppPath("exe")), "data", project.toString(), "index.html"), data, {
         encoding: "utf8",
     });
 }

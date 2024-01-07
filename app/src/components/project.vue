@@ -130,6 +130,7 @@ import path from "path";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { shell } from "electron";
 import fs from "fs";
+
 export default {
     name: "project-view",
     emits: ["change"],
@@ -331,7 +332,7 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
-    /* background: #606266; */
+    background: #191919;
     /* border-right: 1px #737476 solid; */
     /* color: #333; */
     /* background: var(--el-bg-color-overlay); */

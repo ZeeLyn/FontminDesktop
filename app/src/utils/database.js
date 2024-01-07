@@ -1,13 +1,13 @@
 // const fs = require("fs");
 const path = require("path");
-
-console.warn("初始化数据库");
 const sqlite3 = require("sqlite3").verbose();
-let sqliteDbPath = path.join(__dirname, `./.db`);
+const { app } = require("electron");
+let sqliteDbPath = path.join(path.dirname(app.getAppPath("exe")), `.db`);
+// fs.writeFileSync("d://log.txt", path.dirname(app.getAppPath("exe")));
 const db = new sqlite3.Database(sqliteDbPath, function (err) {
     if (err) throw err;
     else {
-        db.run('CREATE TABLE if not exists "project" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "title" TEXT(20) NOT NULL, "fontfile" TEXT,"fontfamily" TEXT,"output" TEXT);');
+        db.run('CREATE TABLE if not exists "project" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "title" TEXT(20) NOT NULL, "fontfile" TEXT,"fontfamily" TEXT,"output" TEXT,"types" TEXT);');
     }
 });
 

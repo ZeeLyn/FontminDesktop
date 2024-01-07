@@ -35,8 +35,7 @@ import ipc from "../utils/ipc.js";
 import SetFont from "../components/SetFont.vue";
 import Project from "../components/project.vue";
 import Content from "../components/content.vue";
-import path from "path";
-
+import { useGlobalStore } from "@/stores/globalStore";
 export default {
     name: "home",
     components: {
@@ -62,13 +61,22 @@ export default {
             },
         },
     },
-    setup() {},
+    setup() {
+        var store = useGlobalStore();
+        return { store };
+    },
     mounted() {
         this.$ipc.on(ipc.SetFont, this.SetFont);
         this.$ipc.on(ipc.GenerateFont, this.GenerateFontCallback);
         this.$ipc.on(ipc.EditTypes, this.EditTypes);
+        this.$ipc.on(ipc.GetBaseDir, this.GetBaseDir);
+        this.$ipc.send(ipc.GetBaseDir);
     },
     methods: {
+        GetBaseDir(e, dir) {
+            console.log(dir);
+            this.store.SetBaseDir(dir);
+        },
         TypesChangedHandler() {
             this.$ipc.send(ipc.EditTypes, this.project.id, JSON.stringify(this.types));
         },
@@ -88,10 +96,9 @@ export default {
         ContentChangeHandle(v) {
             this.contentLen = v.length;
         },
-        GenerateHandle() {
+        async GenerateHandle() {
             this.loading = true;
-            var types = ["eot", "svg", "ttf", "woff", "woff2"];
-            this.$ipc.send(ipc.GenerateFont, this.project.id, JSON.stringify(types));
+            this.$ipc.send(ipc.GenerateFont, this.project.id);
         },
         GenerateFontCallback() {
             this.loading = false;

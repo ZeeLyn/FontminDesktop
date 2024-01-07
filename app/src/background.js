@@ -1,19 +1,17 @@
 "use strict";
 /*eslint-disable */
-import { app, protocol, BrowserWindow, ipcMain, nativeImage, Tray, Menu, globalShortcut, remote } from "electron";
+import { app, protocol, BrowserWindow, ipcMain, nativeImage } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 // import SystemInfo from './utils/SystemInfo.js'
 import ipc_provider from "./utils/ipc_provider.js";
-import ipc from "./utils/ipc.js";
 const path = require("path");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
-var hasNewMessage = false;
 
 app.setAppUserModelId("Fontmin Desktop");
 
-console.log(app.getPath("userData"));
+// console.log(app.getPath("userData"), app.getAppPath());
 
 // convertFont(`D://SourceHanSerifCN-Light-5.otf`, `D://test.ttf`);
 
@@ -22,7 +20,7 @@ protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: tru
 var mainWindow = null;
 async function createWindow() {
     //去掉顶部菜单
-    if (!isDevelopment) Menu.setApplicationMenu(null);
+    // if (!isDevelopment) Menu.setApplicationMenu(null);
 
     const cwd = isDevelopment ? null : path.join(__dirname, "..");
     const win = (mainWindow = new BrowserWindow({
@@ -36,18 +34,19 @@ async function createWindow() {
         webPreferences: {
             // Use pluginOptions.nodeIntegration, leave this alone
             // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-            devTools: isDevelopment,
-            nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-            contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+            devTools: true,
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: false,
             webSecurity: false,
         },
-        maximizable: isDevelopment,
+        maximizable: true,
         darkTheme: true,
-        resizable: isDevelopment,
+        resizable: true,
         fullscreenable: false,
 
         alwaysOnTop: false,
-        frame: isDevelopment,
+        frame: true,
     }));
 
     win.webContents.setZoomFactor(1.0);
@@ -61,16 +60,16 @@ async function createWindow() {
         // Load the index.html when not in development
         win.loadURL("app://./index.html");
     }
-    win.on("close", (event) => {
-        event.preventDefault();
-        win.hide();
-        win.setSkipTaskbar(true);
-        // app.quit();
-    });
-    win.on("focus", async () => {
-        win.webContents.send("OnWindowFocus");
-        hasNewMessage = false;
-    });
+    // win.on("close", (event) => {
+    //     event.preventDefault();
+    //     win.hide();
+    //     win.setSkipTaskbar(true);
+    //     // app.quit();
+    // });
+    // win.on("focus", async () => {
+    //     win.webContents.send("OnWindowFocus");
+    //     hasNewMessage = false;
+    // });
 }
 if (!isDevelopment) {
     app.setLoginItemSettings({
@@ -80,13 +79,13 @@ if (!isDevelopment) {
 }
 
 // Quit when all windows are closed.
-app.on("window-all-closed", () => {
-    // On macOS it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
-});
+// app.on("window-all-closed", () => {
+//     // On macOS it is common for applications and their menu bar
+//     // to stay active until the user quits explicitly with Cmd + Q
+//     if (process.platform !== "darwin") {
+//         app.quit();
+//     }
+// });
 
 app.on("activate", () => {
     // On macOS it's common to re-create a window in the app when the

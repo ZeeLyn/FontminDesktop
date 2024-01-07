@@ -10,4 +10,5 @@ export default {
     ChooseFolder: "ChooseFolder",
     EditFontFamily: "EditFontFamily",
     EditTypes: "EditTypes",
+    GetBaseDir: "GetBaseDir",
 };

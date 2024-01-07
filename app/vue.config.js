@@ -27,7 +27,7 @@ module.exports = {
                     allowToChangeInstallationDirectory: true,
                     installerIcon: "./public/logo.ico",
                     uninstallerIcon: "./public/logo.ico",
-                    installerHeaderIcon: "./public/.logo.ico",
+                    installerHeaderIcon: "./public/logo.ico",
                     createDesktopShortcut: true,
                     createStartMenuShortcut: true,
                     shortcutName: "Fontmin Desktop",
