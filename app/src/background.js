@@ -66,12 +66,12 @@ async function createWindow() {
     //     hasNewMessage = false;
     // });
 }
-if (!isDevelopment) {
-    app.setLoginItemSettings({
-        //设置开机启动
-        openAtLogin: false,
-    });
-}
+// if (!isDevelopment) {
+//     app.setLoginItemSettings({
+//         //设置开机启动
+//         openAtLogin: false,
+//     });
+// }
 
 // Quit when all windows are closed.
 // app.on("window-all-closed", () => {
