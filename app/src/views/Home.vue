@@ -143,6 +143,7 @@ export default {
 .project {
     width: 400px;
     height: 100%;
+    flex-shrink: 0;
 }
 .wrap {
     flex: 1;
