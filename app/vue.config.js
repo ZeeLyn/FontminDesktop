@@ -11,13 +11,13 @@ module.exports = {
                     output: "./dist_electron",
                 },
                 win: {
-                    icon: "./public/logo.ico",
+                    icon: "./public/logo.png",
                 },
                 mac: {
-                    icon: "./public/logo.ico",
+                    icon: "./public/logo.png",
                 },
                 linux: {
-                    icon: "./public/logo.ico",
+                    icon: "./public/logo.png",
                 },
                 nsis: {
                     oneClick: false,
