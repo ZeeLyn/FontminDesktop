@@ -31,7 +31,7 @@ module.exports = {
                     installerHeaderIcon: "./public/logo.ico",
                     createDesktopShortcut: true,
                     createStartMenuShortcut: true,
-                    shortcutName: "Fontmin Desktop",
+                    shortcutName: "字体压缩",
                 },
             },
         },
