@@ -1,6 +1,5 @@
 <template>
     <el-input type="textarea" class="content" v-model="content" resize="none" :input-style="`height:100%; font-size:16px; font-family:'local-font-family';`" show-word-limit maxlength="10000" />
-    {{ font }}
 </template>
 <script>
 import ipc from "../utils/ipc.js";
