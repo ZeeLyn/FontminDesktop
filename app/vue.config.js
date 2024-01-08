@@ -12,6 +12,7 @@ module.exports = {
                 },
                 win: {
                     icon: "./public/logo.png",
+                    requestedExecutionLevel: "requireAdministrator",
                 },
                 mac: {
                     icon: "./public/logo.png",
