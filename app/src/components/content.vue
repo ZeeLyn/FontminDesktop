@@ -4,6 +4,7 @@
 </template>
 <script>
 import ipc from "../utils/ipc.js";
+import fs from "fs";
 export default {
     name: "content-view",
     props: {
@@ -31,28 +32,13 @@ export default {
     methods: {
         filePathToBlob(filePath) {
             return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-
-                // 设置跨域请求头（如果需要）
-                if (typeof window !== "undefined" && typeof document !== "undefined") {
-                    xhr.open("GET", filePath);
-
-                    // 添加额外的请求头信息（如果有必要）
-                    xhr.setRequestHeader("Content-Type", "application/octet-stream");
-                    xhr.responseType = "arraybuffer";
-
-                    xhr.onload = function () {
-                        if (xhr.status === 200 || xhr.status === 304) {
-                            resolve(new Blob([xhr.response], { type: "application/octet-stream" }));
-                        } else {
-                            reject(`Error ${xhr.status}: ${xhr.statusText}`);
-                        }
-                    };
-
-                    xhr.send();
-                } else {
-                    reject("File path conversion to blob is not supported in this environment");
-                }
+                fs.readFile(filePath, (err, data) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(new Blob([data]));
+                    }
+                });
             });
         },
         GetContent(evt, e) {

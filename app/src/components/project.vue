@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="no-data" v-if="!projects || projects.length == 0">
-        <el-empty description="还没创建项目">
+        <el-empty description="还没有项目">
             <el-button
                 type="primary"
                 icon="Plus"
