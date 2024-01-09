@@ -77,7 +77,7 @@
             >
         </el-empty>
     </div>
-    <el-dialog v-model="createDialogVisible" :title="form.id > 0 ? '编辑项目' : '添加项目'" center destroy-on-close width="500px" :close-on-click-modal="false">
+    <el-dialog v-model="createDialogVisible" :title="form.id > 0 ? '编辑项目' : '新建项目'" center destroy-on-close width="500px" :close-on-click-modal="false">
         <el-form :model="form" :rules="CreateRules" ref="form" label-width="auto" scroll-to-error style="width: 100%" :hide-required-asterisk="true">
             <el-form-item prop="title" label="项目名称">
                 <el-input v-model="form.title" placeholder="请输入项目名称" maxlength="20" show-word-limit clearable> </el-input>
@@ -90,7 +90,7 @@
                 </el-input>
             </el-form-item>
         </el-form>
-        <template #footer> <el-button @click="SubmitHandle" type="primary" :loading="submiting"> 确认提交 </el-button></template>
+        <template #footer> <el-button @click="SubmitHandle" type="primary" :loading="submiting"> 保存 </el-button></template>
     </el-dialog>
     <el-dialog v-model="codeDialogVisible" title="CSS代码" center destroy-on-close width="80%" :close-on-click-modal="true">
         <div style="display: flex; align-items: center"><el-switch v-model="base64" style="margin-right: 5px"></el-switch> Base64 encode</div>
