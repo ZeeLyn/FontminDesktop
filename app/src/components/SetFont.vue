@@ -1,5 +1,5 @@
 <template>
-    <div class="font-drag-wrap" :class="dragEnter ? 'draging' : ''" @dragenter.prevent.stop="DragEnterHandle" @dragover.prevent.stop @dragleave.prevent.stop="DragLeaveHandle" @dragend.prevent.stop="DragLeaveHandle" @drop.prevent="DropFontFileHandle">{{ fontFile ? getFileName(fontFile) : "请拖入字体文件" }}</div>
+    <div class="font-drag-wrap" :class="dragEnter ? 'draging' : ''" @dragenter.prevent="DragEnterHandle" @dragover.prevent @dragleave.prevent="DragLeaveHandle" @dragend.prevent="DragLeaveHandle" @drop.prevent="DropFontFileHandle">{{ fontFile ? getFileName(fontFile) : "请拖入 （ttf | otf | woff） 格式的字体文件" }}</div>
 </template>
 
 <script>
@@ -41,7 +41,6 @@ export default {
         },
         DropFontFileHandle(e) {
             this.dragEnter = false;
-            // console.log(e, e.dataTransfer.files[0].path);
             var src = e.dataTransfer.files[0].path;
             var ext = path.extname(e.dataTransfer.files[0].name).toLowerCase();
             if (![".ttf", ".otf", ".woff"].includes(ext)) {
@@ -73,12 +72,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: 20px;
     /* color: #ccc; */
     margin: 10px 0;
     color: #ccc;
     border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
 }
+
 .draging {
     background: #409eff;
     border: 1px #409eff solid;

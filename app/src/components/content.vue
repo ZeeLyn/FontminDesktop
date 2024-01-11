@@ -1,5 +1,5 @@
 <template>
-    <el-input type="textarea" class="content" v-model="content" resize="none" :input-style="`height:100%; font-size:16px; font-family:'local-font-family';`" show-word-limit maxlength="10000" />
+    <el-input type="textarea" class="content" v-model="content" @input="InputContentHandler" resize="none" :input-style="`height:100%; font-size:16px; font-family:'local-font-family';`" show-word-limit maxlength="10000" />
 </template>
 <script>
 import ipc from "../utils/ipc.js";
@@ -19,16 +19,16 @@ export default {
         project: function (v) {
             this.$ipc.send(ipc.GetContent, v);
         },
-        content: function (v) {
-            this.$ipc.send(ipc.SetContent, this.project, v);
-            this.$emit("change", v);
-        },
     },
     mounted() {
         this.$ipc.on(ipc.GetContent, this.GetContent);
         this.$ipc.send(ipc.GetContent, this.project);
     },
     methods: {
+        InputContentHandler() {
+            this.$ipc.send(ipc.SetContent, this.project, this.content);
+            this.$emit("change", this.content);
+        },
         filePathToBlob(filePath) {
             return new Promise((resolve, reject) => {
                 fs.readFile(filePath, (err, data) => {
@@ -41,7 +41,6 @@ export default {
             });
         },
         GetContent(evt, e) {
-            // console.log(e);
             this.content = e.content;
             this.font = e.font;
             if (e.font) {

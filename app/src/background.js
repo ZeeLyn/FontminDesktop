@@ -3,9 +3,14 @@
 import { app, protocol, BrowserWindow, ipcMain, nativeImage } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+import fs from "fs";
+const path = require("path");
+const tempDir = require("os").tmpdir();
+console.log(tempDir);
+const tempFolder = path.join(tempDir, "Fontmin.Desktop");
+if (!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 // import SystemInfo from './utils/SystemInfo.js'
 import ipc_provider from "./utils/ipc_provider.js";
-const path = require("path");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 

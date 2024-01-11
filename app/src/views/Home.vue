@@ -78,7 +78,6 @@ export default {
     },
     methods: {
         GetBaseDir(e, dir) {
-            console.log(dir);
             this.store.SetBaseDir(dir);
         },
         TypesChangedHandler() {
