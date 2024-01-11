@@ -6,7 +6,6 @@ import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 import fs from "fs";
 const path = require("path");
 const tempDir = require("os").tmpdir();
-console.log(tempDir);
 const tempFolder = path.join(tempDir, "Fontmin.Desktop");
 if (!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 // import SystemInfo from './utils/SystemInfo.js'
