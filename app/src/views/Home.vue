@@ -99,7 +99,7 @@ export default {
         ContentChangeHandle(v) {
             this.contentLen = v.length;
         },
-        async GenerateHandle() {
+        GenerateHandle() {
             this.loading = true;
             this.$ipc.send(ipc.GenerateFont, this.project.id);
         },
