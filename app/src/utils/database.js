@@ -1,10 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
-// const { app } = require("electron");
-const tempDir = require("os").tmpdir();
-if (!fs.existsSync(path.join(tempDir, "Fontmin.Desktop"))) fs.mkdirSync(path.join(tempDir, "Fontmin.Desktop"));
-let sqliteDbPath = path.join(tempDir, "Fontmin.Desktop", `.db`);
+// import { app } from "electron";
+const { app } = require("electron");
+const tempDir = path.dirname(app.getPath("userData"));
+if (!fs.existsSync(path.join(tempDir, "FontminDesktop"))) fs.mkdirSync(path.join(tempDir, "FontminDesktop"));
+let sqliteDbPath = path.join(tempDir, "FontminDesktop", `.data`);
 // fs.writeFileSync("d://log.txt", path.dirname(app.getAppPath("exe")));
 const db = new sqlite3.Database(sqliteDbPath, function (err) {
     if (err) throw err;

@@ -11,6 +11,9 @@ if (!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 // import SystemInfo from './utils/SystemInfo.js'
 import ipc_provider from "./utils/ipc_provider.js";
 
+// console.log(path.dirname(app.getPath("userData")));
+// fs.writeFileSync("D://log.txt", path.dirname(app.getPath("exe")));
+
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 app.setAppUserModelId("Fontmin Desktop");

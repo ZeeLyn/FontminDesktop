@@ -5,14 +5,14 @@ import { Execute, Query } from "./database";
 import fs from "fs";
 import path from "path";
 import fontCarrier from "../font-carrier/index.js";
-const tempDir = require("os").tmpdir();
+const tempDir = path.dirname(app.getPath("userData"));
 export default (_window) => {
     var window = _window;
     ipcMain.on(ipc.GetBaseDir, (evt) => {
-        window.webContents.send(ipc.GetBaseDir, path.dirname(app.getAppPath("exe")));
+        window.webContents.send(ipc.GetBaseDir, tempDir);
     });
     ipcMain.on(ipc.GenerateFont, (evt, id) => {
-        var contentFile = path.join(tempDir, "Fontmin.Desktop", "data", id.toString(), "content.txt");
+        var contentFile = path.join(tempDir, "FontminDesktop", id.toString(), "content.txt");
         Query('select fontfamily,fontfile,output,types from "project" where id=?;', [id]).then((rows) => {
             fs.readFile(contentFile, { encoding: "utf-8" }, (err, data) => {
                 if (err) {
@@ -35,7 +35,7 @@ export default (_window) => {
         Execute('insert into "project"(title,output,types) values(?,?,?);', [title, output, '["eot","svg","ttf","woff","woff2"]'])
             .then((id) => {
                 try {
-                    var folder = path.join(tempDir, "Fontmin.Desktop", "data", id.toString());
+                    var folder = path.join(tempDir, "FontminDesktop", id.toString());
                     if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
                 } catch (err) {
                     console.error(err);
@@ -76,7 +76,7 @@ export default (_window) => {
     ipcMain.on(ipc.DeleteProject, (evt, id) => {
         Execute('delete from "project" where id=?;', [id])
             .then(() => {
-                var folder = path.join(tempDir, "Fontmin.Desktop", "data", id.toString());
+                var folder = path.join(tempDir, "FontminDesktop", id.toString());
                 if (fs.existsSync(folder)) fs.rmdirSync(folder, { recursive: true, force: true });
                 window.webContents.send(ipc.DeleteProject, { success: true });
             })
@@ -100,12 +100,12 @@ export default (_window) => {
             });
     });
     ipcMain.on(ipc.SetFont, (evt, id, fontPath, name) => {
-        var folder = path.join(tempDir, "Fontmin.Desktop", "data", id.toString(), "font");
+        var folder = path.join(tempDir, "FontminDesktop", id.toString(), "font");
         if (fs.existsSync(folder)) fs.rmSync(folder, { recursive: true, force: true });
         fs.mkdirSync(folder, { recursive: true });
         copyFile(fontPath, folder).then(() => {
             // writeHtmlFile(id, name);
-            var copyUrl = path.join(tempDir, "Fontmin.Desktop", "data", id.toString(), "font", path.basename(fontPath));
+            var copyUrl = path.join(tempDir, "FontminDesktop", id.toString(), "font", path.basename(fontPath));
             Query('update "project" set fontfamily=?,fontfile=? where id=?;', [name, copyUrl, id])
                 .then((rows) => {
                     window.webContents.send(ipc.SetFont, {
@@ -126,7 +126,7 @@ export default (_window) => {
         });
     });
     ipcMain.on(ipc.GetContent, (evt, id) => {
-        var contentFile = path.join(tempDir, "Fontmin.Desktop", "data", id.toString(), "content.txt");
+        var contentFile = path.join(tempDir, "FontminDesktop", id.toString(), "content.txt");
         Query('select fontfamily,fontfile from "project" where id=?;', [id]).then((rows) => {
             if (!fs.existsSync(contentFile)) {
                 window.webContents.send(ipc.GetContent, {
@@ -150,7 +150,7 @@ export default (_window) => {
         });
     });
     ipcMain.on(ipc.SetContent, (evt, id, content) => {
-        var contentFile = path.join(tempDir, "Fontmin.Desktop", "data", id.toString(), "content.txt");
+        var contentFile = path.join(tempDir, "FontminDesktop", id.toString(), "content.txt");
         fs.writeFileSync(contentFile, content, {
             encoding: "utf8",
         });
